@@ -1,0 +1,37 @@
+name: Test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: test-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build test image
+        run: docker compose build dev
+
+      - name: Unit tests and coverage
+        run: |
+          docker compose run --rm \
+            -v /var/run/docker.sock:/var/run/docker.sock \
+            dev sh -c 'cargo test --all-features && cargo llvm-cov --all-features --lcov --output-path lcov.info --fail-under-lines 95'
+
+      - name: Upload coverage
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lcov
+          path: lcov.info

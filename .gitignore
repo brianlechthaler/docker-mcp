@@ -1,0 +1,12 @@
+/target
+**/*.rs.bk
+Cargo.lock
+*.profraw
+*.profdata
+coverage/
+lcov.info
+coverage-output.txt
+tarpaulin-report.html
+.env
+.idea/
+.vscode/

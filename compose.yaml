@@ -1,0 +1,39 @@
+services:
+  dev:
+    build:
+      context: .
+      target: dev
+    volumes:
+      - .:/workspace
+    working_dir: /workspace
+
+  test:
+    build:
+      context: .
+      target: dev
+    volumes:
+      - .:/workspace
+    working_dir: /workspace
+    command: make test
+
+  lint:
+    build:
+      context: .
+      target: dev
+    volumes:
+      - .:/workspace
+    working_dir: /workspace
+    command: make lint
+
+  docker-mcp:
+    build:
+      context: .
+      target: runtime
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+      DOCKER_MCP_SCOPES: docker:read,docker:write,docker:compose
+      DOCKER_MCP_CALLER_IDENTITY: cursor-agent
+      DOCKER_MCP_AUDIT_JSON: "true"
+    stdin_open: true
+    tty: false
