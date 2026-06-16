@@ -9,9 +9,15 @@ COPY src ./src
 RUN cargo build --release
 
 FROM debian:bookworm-slim AS runtime
+ARG TARGETARCH
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    ca-certificates docker.io docker-compose-plugin \
-    && rm -rf /var/lib/apt/lists/*
+    ca-certificates curl docker.io \
+    && rm -rf /var/lib/apt/lists/* \
+    && ARCH=$(case "$TARGETARCH" in amd64) echo x86_64 ;; arm64) echo aarch64 ;; *) echo "$TARGETARCH" ;; esac) \
+    && mkdir -p /usr/local/lib/docker/cli-plugins \
+    && curl -fsSL "https://github.com/docker/compose/releases/download/v2.29.0/docker-compose-linux-${ARCH}" \
+        -o /usr/local/lib/docker/cli-plugins/docker-compose \
+    && chmod +x /usr/local/lib/docker/cli-plugins/docker-compose
 RUN useradd -m -u 1000 mcp
 COPY --from=builder /workspace/target/release/docker-mcp /usr/local/bin/docker-mcp
 USER mcp
