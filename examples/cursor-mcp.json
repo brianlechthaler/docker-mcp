@@ -1,0 +1,18 @@
+# Cursor MCP configuration example (adjust paths)
+
+{
+  "mcpServers": {
+    "docker": {
+      "command": "docker",
+      "args": [
+        "compose",
+        "-f",
+        "compose.yaml",
+        "run",
+        "--rm",
+        "-T",
+        "docker-mcp"
+      ]
+    }
+  }
+}

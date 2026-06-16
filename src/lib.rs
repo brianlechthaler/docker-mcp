@@ -1,0 +1,25 @@
+pub mod audit;
+pub mod auth;
+pub mod backend;
+pub mod bootstrap;
+pub mod config;
+pub mod error;
+pub mod inventory;
+pub mod run;
+pub mod runtime;
+pub mod sanitize;
+pub mod server;
+pub mod service;
+pub mod validate;
+
+pub use audit::{AuditLogger, AuditResultStatus, AuditSink, JsonLineAuditSink, MemoryAuditSink};
+pub use auth::{Authorizer, ToolScope};
+pub use backend::{BollardBackend, DockerBackend, MockBackend};
+pub use bootstrap::{bootstrap_from_env, bootstrap_with_backend};
+pub use config::Config;
+pub use error::DockerMcpError;
+pub use inventory::{inventory_fingerprint, registered_tools, SERVER_VERSION};
+pub use run::{prepare_server, run};
+pub use runtime::{build_audit_logger, init_tracing};
+pub use server::{run_stdio_server, DockerMcpServer};
+pub use service::DockerService;
