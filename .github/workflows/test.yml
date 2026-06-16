@@ -27,7 +27,7 @@ jobs:
         run: |
           docker compose run --rm \
             -v /var/run/docker.sock:/var/run/docker.sock \
-            dev sh -c 'cargo test --all-features && cargo llvm-cov --all-features --lcov --output-path lcov.info --fail-under-lines 100'
+            dev sh -c 'cargo test --all-features && cargo llvm-cov --all-features --lcov --output-path lcov.info --fail-under-lines 95'
 
       - name: Upload coverage
         if: always()

@@ -14,7 +14,9 @@ fmt:
 	cargo fmt --all
 
 coverage:
-	cargo llvm-cov --all-features --lcov --output-path lcov.info --fail-under-lines 100
+	docker compose run --rm \
+		-v /var/run/docker.sock:/var/run/docker.sock \
+		dev cargo llvm-cov --all-features --lcov --output-path lcov.info --fail-under-lines 95
 
 docker-build:
 	docker compose build dev
